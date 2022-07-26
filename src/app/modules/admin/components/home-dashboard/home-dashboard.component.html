@@ -1,0 +1,118 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Dashboard</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+
+    <!-- Content Header (Page header) -->
+
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+
+        <!-- Small Box (Stat card) -->
+<!--        <h5 class="mb-2 mt-4">Small Box</h5>-->
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-12" routerLink="../users" style="cursor: pointer;">
+            <div class="info-box bg-gradient-info">
+              <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Customers</span>
+                <span class="info-box-number">{{users.length}}</span>
+
+<!--                <div class="progress">-->
+<!--                  <div class="progress-bar" style="width: 70%"></div>-->
+<!--                </div>-->
+<!--                <span class="progress-description">-->
+<!--                  70% Increase in 30 Days-->
+<!--                </span>-->
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12" routerLink="../restaurant-owners" style="cursor: pointer;">
+            <div class="info-box bg-gradient-success">
+              <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Restaurant Owners</span>
+                <span class="info-box-number">{{resturentowners.length}}</span>
+
+<!--                <div class="progress">-->
+<!--                  <div class="progress-bar" style="width: 70%"></div>-->
+<!--                </div>-->
+<!--                <span class="progress-description">-->
+<!--                  70% Increase in 30 Days-->
+<!--                </span>-->
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12"  routerLink="../delivery-executives" style="cursor: pointer;">
+            <div class="info-box bg-gradient-warning">
+              <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Delivery Executives</span>
+                <span class="info-box-number">{{drivers.length}}</span>
+
+<!--                <div class="progress">-->
+<!--                  <div class="progress-bar" style="width: 70%"></div>-->
+<!--                </div>-->
+<!--                <span class="progress-description">-->
+<!--                  70% Increase in 30 Days-->
+<!--                </span>-->
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12" routerLink="../trainers" style="cursor: pointer;">
+            <div class="info-box bg-gradient-danger">
+              <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Health Coaches</span>
+                <span class="info-box-number">{{coaches.length}}</span>
+
+<!--                <div class="progress">-->
+<!--                  <div class="progress-bar" style="width: 70%"></div>-->
+<!--                </div>-->
+<!--                <span class="progress-description">-->
+<!--                  70% Increase in 30 Days-->
+<!--                </span>-->
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+      </div>
+    </section>
+</div>

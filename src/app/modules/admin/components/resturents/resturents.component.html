@@ -1,0 +1,272 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Restaurants</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Restaurants</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+
+  <!-- Content Header (Page header) -->
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+
+          <!-- /.card start -->
+          <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Phone</th>
+                <th>Functional Hours</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr *ngFor="let item of list; let i=index;">
+                <!--              <tr>-->
+                <td>{{item.name}}</td>
+                <td>{{item.owner_id.fullName}}</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.hours}}</td>
+                <td>{{item.location}}</td>
+                <td>
+                  <div class="custom-control custom-switch" >
+                    <input type = "checkbox" [checked] = "item.isActive"
+                           (click)="changeStatus(item.isActive, item._id)"
+                           class="custom-control-input" id="customSwitches{{i}}" />
+                    <label class="custom-control-label" for="customSwitches{{i}}"></label>
+                  </div>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm">
+                  <button type="button" (click)="viewDetails(item)" data-toggle="modal" data-target="#ViewFormModal" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                  <button type="button" (click)="getDetails(item._id)" data-toggle="modal" style="margin-left: 4px;" data-target="#EditFormModal" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                  <button type="button" (click)="delVal(item._id)" class="btn btn-danger" style="margin-left: 4px;" data-toggle="modal" data-target="#DeleteModal"><i class="fas fa-trash"></i></button>
+                  </div>
+                </td>
+
+              </tr>
+
+              </tbody>
+
+            </table>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="EditFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit</h5>
+        <button type="button" (click)="reset()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="applicantEditForm" method="post">
+          <!--          <div class="form-group">-->
+          <!--            <label for="">Profile Image <span style="color: #aba8a8">(Supported file formats: png, jpg)</span></label>-->
+          <!--            <div class="input-group">-->
+          <!--              <div class="custom-file">-->
+          <!--                <input type="file" #myInput (change)="handleUpload($event, 'image')"  accept="image/png, image/jpg, image/jpeg"   >-->
+          <!--                &lt;!&ndash;                        <label class="custom-file-label" for="">Choose File</label>&ndash;&gt;-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--            <span style="color: red;-->
+          <!--          padding-left: 10px;-->
+          <!--          font-size: 14px;-->
+          <!--          padding-top: 5px;-->
+          <!--          display: inline-block;" *ngIf="!image && submitStatus">-->
+          <!--                            Please select your profile image</span>-->
+          <!--          </div>-->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Title </label>
+              <input type="text" class="form-control" formControlName="name"  required placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantEditForm.controls.name.errors && submitStatus">
+                            Please enter title</span>
+            </div>
+          </div>
+          <!-- form-row end.// -->
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Functional Hours </label>
+              <input type="text" class="form-control" formControlName="hours" placeholder="10:00-20:00">
+              <span style="color: red;
+                        padding-left: 10px;
+                        font-size: 14px;
+                        padding-top: 5px;
+                        display: inline-block;" *ngIf="applicantEditForm.controls.hours.errors && submitStatus">
+                                          Please enter functional hours</span>
+            </div>
+            <!-- form-group end.// -->
+            <div class="form-group col-md-6">
+              <label>Contact No.</label>
+              <input type="text" (keypress)="helper.numberOnly($event)" maxlength="10" class="form-control" formControlName="phone" placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantEditForm.controls.phone.errors && submitStatus">
+                            Please enter contact number</span>
+            </div>
+            <!-- form-group end.// -->
+          </div>
+          <!-- form-row.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Address</label>
+              <input type="text" class="form-control" formControlName="location"  placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantEditForm.controls.location.errors && submitStatus">
+                            Please enter valid address</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Description </label>
+              <textarea class="form-control" formControlName="description" id="summernote"  placeholder=""></textarea>
+              <span style="color: red;
+                        padding-left: 10px;
+                        font-size: 14px;
+                        padding-top: 5px;
+                        display: inline-block;" *ngIf="applicantEditForm.controls.description.errors && submitStatus">
+                                          Please enter description</span>
+            </div>
+          </div>
+
+
+          <div class="buttons-footer">
+            <button type="button" (click)="reset()" data-dismiss="modal" aria-label="Close" class="btn-sm btn-primary">Cancel</button>
+            <button type="button"  (click)="UpdateApplicant()" style="margin-left: 10px;" class="btn-sm btn-success">Submit</button>
+          </div>
+          <!-- form-group end.// -->
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- View Modal -->
+<div class="modal fade" id="ViewFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="viewdetail.name">
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Title: </label>
+              <p>{{viewdetail.name}}</p>
+            </div>
+          </div>
+          <!-- form-row end.// -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Owner: </label>
+              <p>{{viewdetail.owner_id.fullName}}</p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Address: </label>
+              <p>{{viewdetail.location}}</p>
+            </div>
+          </div>
+            <!-- form-group end.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Contact No: </label>
+              <p>{{viewdetail.phone}}</p>
+            </div>
+            <!-- form-group end.// -->
+          </div>
+          <!-- form-row.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Functional Hours </label>
+              <p>{{viewdetail.hours}}</p>
+
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Description </label>
+              <p>{{viewdetail.description}}</p>
+            </div>
+          </div>
+
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--        <h5 class="modal-title">Add</h5>-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="modal-title">Do you want to Delete this data ?</h5>
+
+        <div class="buttons-footer" style="float: right;">
+          <button type="button" data-dismiss="modal" aria-label="Close" class="btn-sm btn-info">No</button>
+          <button type="button" (click)="deleteApplicant()" style="margin-left: 10px;" data-dismiss="modal" aria-label="Close" class="btn-sm btn-danger">Yes</button>
+        </div>
+        <!-- form-group end.// -->
+      </div>
+    </div>
+  </div>
+</div>

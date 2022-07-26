@@ -1,0 +1,207 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">CMS Pages</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">CMS Pages</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+
+  <!-- Content Header (Page header) -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="aps-top-box">
+            <div class="aps-left-header" >
+              <div class="input-group search-group">
+                <!--                <input type="text" class="form-control" placeholder="Search..">-->
+                <!--                <div class="input-group-append">-->
+                <!--                  <button class="btn btn-success" type="button">-->
+                <!--                    <i class="fas fa-search"></i>-->
+                <!--                  </button>-->
+                <!--                </div>-->
+              </div>
+<!--              <a href="#" class="btn btn-info btn-add-tp add-btn" data-toggle="modal" data-target="#AddFormModal">-->
+<!--                <i class="icon-plus"></i> Add</a>-->
+            </div>
+          </div>
+          <!--           /.card start-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">CMS Page List </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of list; let i=index;">
+                  <!--              <tr>-->
+                  <td>{{item.cms_name}}</td>
+                  <td>
+                    <div class="custom-control custom-switch" >
+                      <input type = "checkbox" [checked] = "item.isActive"
+                             (click)="changeStatus(item.isActive, item._id)"
+                             class="custom-control-input" id="customSwitches{{i}}" />
+                      <label class="custom-control-label" for="customSwitches{{i}}"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button type="button" (click)="getDetails(item._id)" data-toggle="modal" data-target="#EditFormModal" style="margin-left: 4px;" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="AddFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add</h5>
+                <button type="button" (click)="reset()" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="applicantForm" method="post">
+
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Name </label>
+              <input type="text" class="form-control" formControlName="cms_name"  required placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantForm.controls.cms_name.errors && submitStatus">
+                            Please enter name</span>
+            </div>
+          </div>
+
+          <div class="NgxEditor__Wrapper" style="margin-bottom: 3px;">
+            <ngx-editor-menu [editor]="editor1"  [toolbar]="toolbar"> </ngx-editor-menu>
+            <ngx-editor
+              [editor]="editor1"
+              formControlName="cms_description"
+              [placeholder]="'Type here...'">
+            </ngx-editor>
+          </div>
+          <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          margin-bottom: 10px;
+          display: inline-block;" *ngIf="applicantForm.controls.cms_description.errors && submitStatus">
+                            Please enter description</span>
+
+          <div class="buttons-footer">
+            <button type="button" (click)="reset()" class="btn-sm btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            <button type="button"  (click)="createApplicant()" style="margin-left: 10px;" class="btn-sm btn-success">Submit</button>
+          </div>
+          <!-- form-group end.// -->
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit</h5>
+        <!--        <button type="button" (click)="reset()" class="close" data-dismiss="modal" aria-label="Close">-->
+        <!--          <span aria-hidden="true">&times;</span>-->
+        <!--        </button>-->
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="applicantEditForm" method="post">
+
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Name </label>
+              <input type="text" class="form-control" formControlName="cms_name"  required placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantEditForm.controls.cms_name.errors && submitStatus">
+                            Please enter name</span>
+            </div>
+          </div>
+          <!-- form-row end.// -->
+<!--          <div class="form-row">-->
+<!--            <div class="col form-group">-->
+<!--            <label>Description </label>-->
+<!--            <textarea rows="5" id="summernote" class="form-control summernote" formControlName="cms_description"></textarea>-->
+<!--            <span style="color: red;-->
+<!--          padding-left: 10px;-->
+<!--          font-size: 14px;-->
+<!--          padding-top: 5px;-->
+<!--          display: inline-block;" *ngIf="applicantEditForm.controls.cms_description.errors && submitStatus">-->
+<!--                            Please enter description</span>-->
+<!--            </div>-->
+<!--          </div>-->
+          <!-- form-row.// -->
+          <div class="NgxEditor__Wrapper" style="margin-bottom: 10px;">
+            <ngx-editor-menu [editor]="editor"  [toolbar]="toolbar"> </ngx-editor-menu>
+            <ngx-editor
+              [editor]="editor"
+              formControlName="cms_description"
+              [placeholder]="'Type here...'">
+            </ngx-editor>
+          </div>
+
+          <div class="buttons-footer">
+            <button type="button" class="btn-sm btn-primary" data-dismiss="modal" aria-label="Close">Cancel</button>
+            <button type="button"  (click)="UpdateApplicant()" style="margin-left: 10px;" class="btn-sm btn-success">Submit</button>
+          </div>
+          <!-- form-group end.// -->
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

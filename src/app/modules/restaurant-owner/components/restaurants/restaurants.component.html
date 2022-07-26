@@ -1,0 +1,239 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Restaurants</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Restaurants</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+
+  <!-- Content Header (Page header) -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="aps-top-box">
+            <div class="aps-left-header" >
+              <div class="input-group search-group">
+                <!--                <input type="text" class="form-control" placeholder="Search..">-->
+                <!--                <div class="input-group-append">-->
+                <!--                  <button class="btn btn-success" type="button">-->
+                <!--                    <i class="fas fa-search"></i>-->
+                <!--                  </button>-->
+                <!--                </div>-->
+              </div>
+              <a href="#" class="btn btn-info btn-add-tp add-btn" data-toggle="modal" data-target="#AddFormModal">
+                <i class="icon-plus"></i> Add</a>
+            </div>
+          </div>
+          <!--           /.card start-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Restaurant List</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Functional Hours</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let item of list; let i=index;">
+                  <!--              <tr>-->
+                  <td>{{item.name}}</td>
+                  <td>{{item.phone}}</td>
+                  <td>{{item.hours}}</td>
+                  <td>{{item.location}}</td>
+                  <td>
+                    <div class="custom-control custom-switch" >
+                      <input type = "checkbox" [checked] = "item.isActive"
+                             (click)="changeStatus(item.isActive, item._id)"
+                             class="custom-control-input" id="customSwitches{{i}}" />
+                      <label class="custom-control-label" for="customSwitches{{i}}"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+<!--                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editFormModal"><i class="fas fa-eye"></i></button>-->
+                      <button type="button" (click)="foodList(item._id)" class="btn btn-warning" >Foods</button>
+                      <button type="button" (click)="delVal(item._id)" class="btn btn-danger" style="margin-left: 4px;" data-toggle="modal" data-target="#DeleteModal"><i class="fas fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="AddFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add</h5>
+                <button type="button" (click)="reset()" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="applicantForm" method="post">
+          <!--          <div class="form-group">-->
+          <!--            <label for="">Profile Image <span style="color: #aba8a8">(Supported file formats: png, jpg)</span></label>-->
+          <!--            <div class="input-group">-->
+          <!--              <div class="custom-file">-->
+          <!--                <input type="file" #myInput (change)="handleUpload($event, 'image')"  accept="image/png, image/jpg, image/jpeg"   >-->
+          <!--                &lt;!&ndash;                        <label class="custom-file-label" for="">Choose File</label>&ndash;&gt;-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--            <span style="color: red;-->
+          <!--          padding-left: 10px;-->
+          <!--          font-size: 14px;-->
+          <!--          padding-top: 5px;-->
+          <!--          display: inline-block;" *ngIf="!image && submitStatus">-->
+          <!--                            Please select your profile image</span>-->
+          <!--          </div>-->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Title </label>
+              <input type="text" class="form-control" formControlName="name"  required placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantForm.controls.name.errors && submitStatus">
+                            Please enter title</span>
+            </div>
+          </div>
+          <!-- form-row end.// -->
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Address</label>
+              <input type="text" class="form-control" formControlName="location"  placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantForm.controls.location.errors && submitStatus">
+                            Please enter valid address</span>
+            </div>
+            <!-- form-group end.// -->
+            <div class="form-group col-md-6">
+              <label>Contact No.</label>
+              <input type="text" (keypress)="helper.numberOnly($event)" maxlength="10" class="form-control" formControlName="phone" placeholder="">
+              <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantForm.controls.phone.errors && submitStatus">
+                            Please enter contact number</span>
+            </div>
+            <!-- form-group end.// -->
+          </div>
+          <!-- form-row.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Functional Hours </label>
+              <input type="text" class="form-control" formControlName="hours" placeholder="10:00-20:00">
+              <span style="color: red;
+                        padding-left: 10px;
+                        font-size: 14px;
+                        padding-top: 5px;
+                        display: inline-block;" *ngIf="applicantForm.controls.hours.errors && submitStatus">
+                                          Please enter functional hours</span>
+            </div>
+          </div>
+<!--          <div class="form-row">-->
+<!--            <div class="col form-group">-->
+<!--              <label>Nutrition Value </label>-->
+<!--              <input type="text" class="form-control" formControlName="Nutrition" placeholder="">-->
+<!--              <span style="color: red;-->
+<!--                        padding-left: 10px;-->
+<!--                        font-size: 14px;-->
+<!--                        padding-top: 5px;-->
+<!--                        display: inline-block;" *ngIf="applicantForm.controls.Nutrition.errors && submitStatus">-->
+<!--                                          Please enter nutrition value</span>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Description </label>
+              <textarea class="form-control" formControlName="description" id="summernote"  placeholder=""></textarea>
+              <span style="color: red;
+                        padding-left: 10px;
+                        font-size: 14px;
+                        padding-top: 5px;
+                        display: inline-block;" *ngIf="applicantForm.controls.description.errors && submitStatus">
+                                          Please enter description</span>
+            </div>
+          </div>
+
+
+          <div class="buttons-footer">
+            <button type="button" (click)="reset()" class="btn-sm btn-primary">Reset</button>
+            <button type="button"  (click)="createApplicant()" style="margin-left: 10px;" class="btn-sm btn-success">Submit</button>
+          </div>
+          <!-- form-group end.// -->
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--        <h5 class="modal-title">Add</h5>-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="modal-title">Do you want to Delete this data ?</h5>
+
+        <div class="buttons-footer" style="float: right;">
+          <button type="button" data-dismiss="modal" aria-label="Close" class="btn-sm btn-info">No</button>
+          <button type="button" (click)="deleteApplicant()" style="margin-left: 10px;" data-dismiss="modal" aria-label="Close" class="btn-sm btn-danger">Yes</button>
+        </div>
+        <!-- form-group end.// -->
+      </div>
+    </div>
+  </div>
+</div>

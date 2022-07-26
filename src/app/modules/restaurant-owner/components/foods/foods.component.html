@@ -1,0 +1,350 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Foods</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="../restaurants" routerLinkActive="active">Restaurants</a></li>
+            <li class="breadcrumb-item active">Food Items</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+
+  <!-- Content Header (Page header) -->
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="aps-top-box">
+            <div class="aps-left-header" >
+              <div class="input-group search-group">
+                <!--                <input type="text" class="form-control" placeholder="Search..">-->
+                <!--                <div class="input-group-append">-->
+                <!--                  <button class="btn btn-success" type="button">-->
+                <!--                    <i class="fas fa-search"></i>-->
+                <!--                  </button>-->
+                <!--                </div>-->
+              </div>
+              <a href="#" class="btn btn-info btn-add-tp add-btn" data-toggle="modal" data-target="#AddFormModal">
+                <i class="icon-plus"></i> Add</a>
+            </div>
+          </div>
+          <!-- /.card start -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Food Items</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Restaurant</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of list; let i=index;">
+                  <!--                <tr>-->
+                  <td>{{item.food_name}}</td>
+                  <td>{{item.restaurant_id.name}}</td>
+                  <td>{{item.category_id.category_name}}</td>
+                  <td>
+                    <div class="custom-control custom-switch" >
+                      <input type = "checkbox" [checked] = "item.isActive"
+                             (click)="changeStatus(item.isActive, item._id)"
+                             class="custom-control-input" id="customSwitches{{i}}" />
+                      <label class="custom-control-label" for="customSwitches{{i}}"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button type="button" (click)="viewDetails(item)" data-toggle="modal" data-target="#ViewFormModal" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                      <button type="button" (click)="getDetails(item._id)" data-toggle="modal" data-target="#EditFormModal" style="margin-left: 4px;" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                      <button type="button" (click)="delVal(item._id)" class="btn btn-danger" style="margin-left: 4px;" data-toggle="modal" data-target="#DeleteModal"><i class="fas fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="AddFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add</h5>
+        <button type="button" (click)="reset()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="applicantForm" method="post">
+          <div class="form-group">
+            <label>Name </label>
+            <input type="text" class="form-control" formControlName="food_name"  />
+            <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantForm.controls.food_name.errors && submitStatus">
+                            Please enter name</span>
+          </div>
+          <div class="form-group">
+            <label>Description </label>
+            <textarea rows="5" class="form-control" formControlName="food_description" ></textarea>
+            <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantForm.controls.food_description.errors && submitStatus">
+                            Please enter name</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Price</label>
+              <input type="email" class="form-control" formControlName="price"  placeholder="">
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="applicantForm.controls.price.errors && submitStatus">
+                                      Please enter price</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Food Category</label>
+              <select class="form-control" formControlName="category_id">
+                <option selected value=""> Choose...</option>
+                <option *ngFor="let cat of catList;" value="{{cat._id}}">{{cat.category_name}}</option>
+
+              </select>
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="applicantForm.controls.category_id.errors && submitStatus">
+                                      Please Select a category</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Food Type</label>
+              <select class="form-control" formControlName="food_type">
+                <option selected value=""> Choose...</option>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+
+              </select>
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="applicantForm.controls.food_type.errors && submitStatus">
+                                      Please Select a category</span>
+            </div>
+          </div>
+          <!-- form-group end.// -->
+
+          <div class="buttons-footer">
+            <button type="button" (click)="reset()" class="btn-sm btn-primary">Reset</button>
+            <button type="button"  (click)="createApplicant()" style="margin-left: 10px;" class="btn-sm btn-success">Submit</button>
+          </div>
+          <!-- form-group end.// -->
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit</h5>
+        <button type="button" (click)="reset()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="applicantEditForm" method="post">
+          <div class="form-group">
+            <label>Name </label>
+            <input type="text" class="form-control" formControlName="food_name"  />
+            <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantEditForm.controls.food_name.errors && submitStatus">
+                            Please enter name</span>
+          </div>
+          <div class="form-group">
+            <label>Description </label>
+            <textarea rows="5" class="form-control" formControlName="food_description" ></textarea>
+            <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="applicantEditForm.controls.food_description.errors && submitStatus">
+                            Please enter name</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Price</label>
+              <input type="email" class="form-control" formControlName="price"  placeholder="">
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="applicantEditForm.controls.price.errors && submitStatus">
+                                      Please enter price</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Food Category</label>
+              <select class="form-control" formControlName="category_id">
+                <option selected value=""> Choose...</option>
+                <option *ngFor="let cat of catList;" value="{{cat._id}}">{{cat.category_name}}</option>
+
+              </select>
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="applicantEditForm.controls.category_id.errors && submitStatus">
+                                      Please Select a category</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Food Type</label>
+              <select class="form-control" formControlName="food_type">
+                <option selected value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+
+              </select>
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="applicantEditForm.controls.food_type.errors && submitStatus">
+                                      Please Select a category</span>
+            </div>
+          </div>
+          <!-- form-group end.// -->
+
+          <div class="buttons-footer">
+            <button type="button" (click)="reset()" class="btn-sm btn-primary">Reset</button>
+            <button type="button"  (click)="UpdateApplicant()" style="margin-left: 10px;" class="btn-sm btn-success">Submit</button>
+          </div>
+          <!-- form-group end.// -->
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--        <h5 class="modal-title">Add</h5>-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="modal-title">Do you want to Delete this data ?</h5>
+
+        <div class="buttons-footer" style="float: right;">
+          <button type="button" data-dismiss="modal" aria-label="Close" class="btn-sm btn-info">No</button>
+          <button type="button" (click)="deleteApplicant()" style="margin-left: 10px;" data-dismiss="modal" aria-label="Close" class="btn-sm btn-danger">Yes</button>
+        </div>
+        <!-- form-group end.// -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- View Modal -->
+<div class="modal fade" id="ViewFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="viewdetail.food_name">
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Food Name: </label>
+              <p>{{viewdetail.food_name}}</p>
+            </div>
+          </div>
+          <!-- form-row end.// -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Description: </label>
+              <p>{{viewdetail.food_description}}</p>
+            </div>
+          </div>
+          <!-- form-group end.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Type: </label>
+              <p>{{viewdetail.food_type}}</p>
+            </div>
+            <!-- form-group end.// -->
+          </div>
+          <!-- form-row.// -->
+
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Price($) </label>
+              <p>{{viewdetail.price}}</p>
+            </div>
+          </div>
+
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

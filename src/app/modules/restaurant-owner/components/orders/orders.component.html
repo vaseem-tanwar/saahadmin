@@ -1,0 +1,177 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Manage Orders</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Orders</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+
+  <!-- Content Header (Page header) -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+
+          <!--           /.card start-->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Order List</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Order No</th>
+                  <th>Customer</th>
+                  <th>Delivery Address</th>
+                  <th>Order Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of list; let i=index;">
+                  <!--              <tr>-->
+                  <td>{{item.orderNo}}</td>
+                  <td>{{item.customerId.name}}</td>
+                  <td>{{item.deliveryFullAddress}}</td>
+                  <td>{{item.orderStatus}}</td>
+
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button type="button" (click)="viewDetails(item)" data-toggle="modal" data-target="#ViewFormModal" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+<!--                      <button type="button" (click)="getDetails(item._id)" data-toggle="modal" data-target="#EditFormModal" style="margin-left: 4px;" class="btn btn-primary"><i class="fas fa-edit"></i></button>-->
+                      <button type="button" (click)="changeStatus(item._id)" class="btn btn-warning" style="margin-left: 4px;" data-toggle="modal" data-target="#StatusFormModal"><i class="fa fa-link" aria-hidden="true"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- View Modal -->
+<div class="modal fade" id="ViewFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="viewdetail.orderNo">
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Order No: </label>
+              <p>{{viewdetail.orderNo}}</p>
+            </div>
+          </div>
+          <!-- form-row end.// -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Customer Name: </label>
+              <p *ngIf="viewdetail.customerId">{{viewdetail.customerId.name}}</p>
+            </div>
+          </div>
+          <!-- form-group end.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Delivery Address: </label>
+              <p>{{viewdetail.deliveryFullAddress}}</p>
+            </div>
+            <!-- form-group end.// -->
+          </div>
+          <!-- form-row.// -->
+          <div class="form-row">
+            <div class="col form-group">
+              <label>Delivery Status: </label>
+              <p>{{viewdetail.orderStatus}}</p>
+            </div>
+          </div>
+
+          <!-- form-group// -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- status Modal -->
+<div class="modal fade" id="StatusFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog addForm-modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--        <h5 class="modal-title">Add</h5>-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="modal-title">Do you want to Change the Status ?</h5>
+        <form [formGroup]="statusForm" method="post">
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Status</label>
+              <select class="form-control" formControlName="order_status">
+                <option selected value="">Choose...</option>
+                <option value="ACCEPTED">ACCEPTED</option>
+                <option value="CANCELLED">CANCELLED</option>
+
+              </select>
+              <span style="color: red;
+                    padding-left: 10px;
+                    font-size: 14px;
+                    padding-top: 5px;
+                    display: inline-block;" *ngIf="statusForm.controls.order_status.errors && submitStatus">
+                                      Please select order status</span>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="statusForm.controls.order_status.value == 'CANCELLED'">
+            <label>Change Status Reason </label>
+            <textarea rows="5" class="form-control" formControlName="change_status_reason"></textarea>
+            <span style="color: red;
+          padding-left: 10px;
+          font-size: 14px;
+          padding-top: 5px;
+          display: inline-block;" *ngIf="statusForm.controls.change_status_reason.errors && submitStatus">
+                            Please enter reason</span>
+          </div>
+        <div class="buttons-footer" style="float: right;">
+<!--          <button type="button" data-dismiss="modal" aria-label="Close" class="btn-sm btn-info">No</button>-->
+          <button type="button" (click)="UpdateStatus()" style="margin-left: 10px;" class="btn-sm btn-danger">Submit</button>
+        </div>
+        </form>
+        <!-- form-group end.// -->
+      </div>
+    </div>
+  </div>
+</div>
+
